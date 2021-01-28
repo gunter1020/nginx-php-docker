@@ -21,6 +21,10 @@ ENV PHP_VER=7.4 \
     PHP_SESS_COOKIE_HTTPONLY=1 \
     PHP_SESS_GC_MAXLIFETIME=1440
 
+# @see https://github.com/docker-library/php/issues/240#issuecomment-305038173
+RUN apk --update-cache --no-cache add gnu-libiconv
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
 # @see https://github.com/codecasts/php-alpine
 ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 
