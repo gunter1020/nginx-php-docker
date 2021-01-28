@@ -5,6 +5,8 @@ LABEL maintainer="Gunter Chou <abcd2221925@gmail.com>"
 
 ARG ALPINE_VER
 ENV DEBIAN_FRONTEND=noninteractive
+ENV APP_DIR=/srv/app \
+    WEB_ROOT=
 ENV PHP_VER=7.4 \
     PHP_TIMEZONE=Asia/Taipei \
     PHP_MEMORY_LIMIT=256M \
@@ -86,12 +88,15 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 RUN apk --update-cache --no-cache add nginx
 
 # Create application directory
-RUN mkdir -p /srv/app && \
-    chown nginx:nginx /srv/app && \
-    chmod 777 /srv/app
+RUN mkdir -p ${APP_DIR} && \
+    chown nginx:nginx ${APP_DIR} && \
+    chmod 777 ${APP_DIR}
 
 # Add image files
 COPY image-files/ /
+
+# Set Nginx root
+RUN sed -i "s|{{NGINX_ROOT}}|${APP_DIR}/${WEB_ROOT}|i" /etc/nginx/conf.d/default.conf
 
 # Entry point
 COPY entrypoint.sh /
