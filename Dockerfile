@@ -64,20 +64,6 @@ RUN apk --update-cache --no-cache add \
 RUN ln -s /usr/bin/php7 /usr/bin/php && \
     ln -s /usr/sbin/php-fpm7 /usr/sbin/php-fpm
 
-# Sed PHP environments
-RUN sed -i "s|;*date.timezone =.*|date.timezone = ${PHP_TIMEZONE}|i" /etc/php7/php.ini && \
-    sed -i "s|;*memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|i" /etc/php7/php.ini && \
-    sed -i "s|;*upload_max_filesize =.*|upload_max_filesize = ${PHP_MAX_UPLOAD}|i" /etc/php7/php.ini && \
-    sed -i "s|;*max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|i" /etc/php7/php.ini && \
-    sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php7/php.ini && \
-    sed -i "s|;*max_execution_time =.*|max_execution_time = ${PHP_MAX_EXECUTION_TIME}|i" /etc/php7/php.ini && \
-    sed -i "s|;*max_input_vars =.*|max_input_vars = ${PHP_MAX_INPUT_VARS}|i" /etc/php7/php.ini && \
-    sed -i "s|;*track_errors =.*|track_errors = ${PHP_TRACK_ERRORS}|i" /etc/php7/php.ini && \
-    sed -i "s|;*session\.save_handler =.*|session\.save_handler = ${PHP_SESS_SAVE_HANDLER}|i" /etc/php7/php.ini && \
-    sed -i "s|;*session\.save_path =.*|session\.save_path = ${PHP_SESS_SAVE_PATH}|i" /etc/php7/php.ini && \
-    sed -i "s|;*session\.cookie_httponly =.*|session\.cookie_httponly = ${PHP_SESS_COOKIE_HTTPONLY}|i" /etc/php7/php.ini && \
-    sed -i "s|;*session\.gc_maxlifetime =.*|session\.gc_maxlifetime = ${PHP_SESS_GC_MAXLIFETIME}|i" /etc/php7/php.ini
-
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
         --install-dir=/usr/bin \
@@ -95,13 +81,10 @@ RUN mkdir -p ${APP_DIR} && \
 # Add image files
 COPY image-files/ /
 
-# Set Nginx root
-RUN sed -i "s|{{NGINX_ROOT}}|${APP_DIR}/${WEB_ROOT}|i" /etc/nginx/conf.d/default.conf
-
-# Entry point
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+# Entrypoint
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["-g", "daemon off;"]
 
 WORKDIR /srv/app
