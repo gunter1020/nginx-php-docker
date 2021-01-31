@@ -2,13 +2,13 @@
 
 ## Version info
 
-- alpine `3.12`
+- Base on `php:${PHP_VER}-fpm-alpine` Docker image
+- alpine `3.13.1`
 - nginx `1.18.0`
-- php `7.4.14`
 
 ## Links
 
-- [GitHub - codecasts/php-alpine](https://github.com/codecasts/php-alpine)
+- [GitHub - mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
 - [GitHub - gunter1020/nginx-php-docker](https://github.com/gunter1020/nginx-php-docker)
 - [Docker Hub Overview page](https://hub.docker.com/r/gunter1020/nginx-php)
 
