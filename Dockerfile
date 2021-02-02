@@ -28,13 +28,12 @@ RUN apk --update-cache --no-cache add gnu-libiconv
 
 #  Install PHP extensions
 RUN install-php-extensions \
+    # @composer \
     bz2 zip \
-    gd imagick \
-    xsl \
+    # gd imagick \
     pdo_mysql redis \
-    bcmath uuid oauth mcrypt \
-    intl opcache \
-    @composer
+    bcmath uuid \
+    intl opcache
 
 # Init PHP ini
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
