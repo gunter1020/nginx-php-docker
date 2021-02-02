@@ -31,12 +31,15 @@
 #### Dockerfile
 
   ```dockerfile
-  FROM gunter1020/nginx-php
-  WORKDIR /srv/app
-  ADD composer.* /srv/app/
-  RUN /usr/bin/composer install --prefer-dist
-  ADD ./ /srv/app
-  ENV PATH /srv/app/vendor/bin:${PATH}
+  FROM composer as build-stage
+  WORKDIR /app
+  COPY . .
+  RUN composer install --prefer-dist
+
+  FROM gunter1020/nginx-php as prod-stage
+  COPY --from=build-stage /app ${APP_DIR}
+  ENV PATH ${APP_DIR}/vendor/bin:${PATH}
+  ENV WEB_ROOT web
   ```
 
 #### docker-compose.yml
