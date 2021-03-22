@@ -20,6 +20,11 @@ sed -i \
 # Sed Nginx environments
 sed -i "s|{{NGINX_ROOT}}|${APP_DIR}/${WEB_ROOT}|i" /etc/nginx/conf.d/default.conf
 
+# Start run bash
+if [[ -f ${APP_DIR}/docker-app-rc.sh && -x ${APP_DIR}/docker-app-rc.sh ]]; then
+    /bin/bash ${APP_DIR}/docker-app-rc.sh
+fi
+
 # Start PHP-FPM and force to run in background
 php-fpm -D
 
