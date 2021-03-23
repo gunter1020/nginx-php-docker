@@ -54,7 +54,9 @@ COPY image-files/ /
 COPY docker-app-entrypoint /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-app-entrypoint
 ENTRYPOINT ["docker-app-entrypoint"]
-CMD ["-g", "daemon off;"]
+
+# Start Nginx with daemon off
+CMD ["nginx", "-g", "daemon off;"]
 
 WORKDIR /srv/app
 
