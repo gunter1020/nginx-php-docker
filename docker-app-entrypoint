@@ -20,18 +20,10 @@ sed -i \
 # Sed Nginx environments
 sed -i "s|{{NGINX_ROOT}}|${APP_DIR}/${WEB_ROOT}|i" /etc/nginx/conf.d/default.conf
 
-# Start PHP-FPM and force to run in background
-php-fpm -D
-
 case "$1" in
-    sh|bash)
-        # Start Nginx
-        nginx
-        set -- "$@"
-    ;;
-    *)
-        # Start Nginx with daemon off
-        set -- nginx "$@"
+    nginx)
+        # Start PHP-FPM and force to run in background
+        php-fpm -D
     ;;
 esac
 
