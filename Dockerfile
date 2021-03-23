@@ -29,10 +29,11 @@ RUN apk --update-cache --no-cache add gnu-libiconv
 #  Install PHP extensions
 RUN install-php-extensions \
     # @composer \
-    bz2 zip \
     # gd imagick \
+    # uuid
+    bz2 zip \
     pdo_mysql redis \
-    bcmath uuid \
+    bcmath \
     intl opcache
 
 # Init PHP ini
